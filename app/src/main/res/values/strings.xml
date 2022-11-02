@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Yeap Auctions</string>
+    <string name="body_title_login">Login</string>
+    <string name="body_h1_login">Please sign in to your account!</string>
+    <string name="user_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="invalid_creditentials">Invalid Creditentials</string>
+    <string name="submit">Login</string>
+    <string name="message_register_login">"Don't have an account? "</string>
+</resources>
