@@ -7,4 +7,11 @@
     <string name="invalid_creditentials">Invalid Creditentials</string>
     <string name="submit">Login</string>
     <string name="message_register_login">"Don't have an account? "</string>
+    <string name="message_sign_up">Sign up</string>
+    <string name="message_forgot_password">Forgot password</string>
+    <string name="submit_message">Submit</string>
+    <string name="person_name">Name Surname</string>
+    <string name="password_label_confirm">Confirm password</string>
+    <string name="btn_back">back</string>
+    <string name="phone">Contact Phone</string>
 </resources>
