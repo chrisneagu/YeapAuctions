@@ -57,7 +57,7 @@ fun YeapAuctionsApp(
                 )
             }
             composable(route = YeapAuctionsScreen.ForgotPassword.name) {
-                val context = LocalContext.current
+
                 ForgotPasswordScreen(
                     email = uiState.forgotpasswordEmail,
                     onEmailChanged =  { viewModel.setForgotpasswordEmail(it)},

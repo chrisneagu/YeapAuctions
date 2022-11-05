@@ -14,4 +14,17 @@
     <string name="password_label_confirm">Confirm password</string>
     <string name="btn_back">back</string>
     <string name="phone">Contact Phone</string>
+    <string name="error_code1_message">Name is empty</string>
+    <string name="error_code2_message">Invalid format for name</string>
+    <string name="error_code3_message">Phone is empty</string>
+    <string name="error_code4_message">Invalid phone format, should be 9 digits</string>
+    <string name="error_code5_message">Email is empty</string>
+    <string name="error_code6_message">Invalid email format</string>
+    <string name="error_code7_message">Password is empty</string>
+    <string name="error_code8_message">Password must be minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character</string>
+    <string name="error_code9_message">Passwords do not match</string>
+    <string name="Romania">+40</string>
+    <string name="UnitedKingdom">+44</string>
+    <string name="France">+33</string>
+    <string name="Spain">+34</string>
 </resources>

@@ -3,6 +3,7 @@ package ro.ase.dam.yeapauctions
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,11 +11,16 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -24,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import ro.ase.dam.yeapauctions.data.local.LocalCountryCodesDataProvider
 import ro.ase.dam.yeapauctions.ui.components.EditTextField
 import ro.ase.dam.yeapauctions.ui.components.EditTextFieldPassword
 import ro.ase.dam.yeapauctions.ui.theme.YeapAuctionsTheme
@@ -44,19 +51,26 @@ fun SignUpScreen(modifier: Modifier = Modifier,
                  onBackClicked: () -> Unit
 ) {
 
+    val codes_list = LocalCountryCodesDataProvider.getList()
     val localContext = LocalContext.current
     val focusManager = LocalFocusManager.current
     var errorCode by remember { mutableStateOf(0) }
+    var expanded by remember { mutableStateOf(false) }
+    var cod by remember { mutableStateOf(R.string.Romania) }
+    var flag by remember {mutableStateOf(R.drawable.ro)}
+
+
+
     when(errorCode) {
-        1 -> Toast.makeText(localContext,"Name is empty", Toast.LENGTH_LONG).show()
-        2 -> Toast.makeText(localContext,"Invalid format for name", Toast.LENGTH_LONG).show()
-        3 -> Toast.makeText(localContext,"Phone is empty", Toast.LENGTH_LONG).show()
-        4 -> Toast.makeText(localContext,"Invalid phone format, should be 9 digits", Toast.LENGTH_LONG).show()
-        5 -> Toast.makeText(localContext,"Email is empty", Toast.LENGTH_LONG).show()
-        6 -> Toast.makeText(localContext,"Invalid email format", Toast.LENGTH_LONG).show()
-        7 -> Toast.makeText(localContext,"Password is empty", Toast.LENGTH_LONG).show()
-        8 -> Toast.makeText(localContext,"Password must be minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character", Toast.LENGTH_LONG).show()
-        9 -> Toast.makeText(localContext,"Passwords do not match", Toast.LENGTH_LONG).show()
+        1 -> Toast.makeText(localContext,stringResource(R.string.error_code1_message), Toast.LENGTH_LONG).show()
+        2 -> Toast.makeText(localContext,stringResource(R.string.error_code2_message), Toast.LENGTH_LONG).show()
+        3 -> Toast.makeText(localContext,stringResource(R.string.error_code3_message), Toast.LENGTH_LONG).show()
+        4 -> Toast.makeText(localContext,stringResource(R.string.error_code4_message), Toast.LENGTH_LONG).show()
+        5 -> Toast.makeText(localContext,stringResource(R.string.error_code5_message), Toast.LENGTH_LONG).show()
+        6 -> Toast.makeText(localContext,stringResource(R.string.error_code6_message), Toast.LENGTH_LONG).show()
+        7 -> Toast.makeText(localContext,stringResource(R.string.error_code7_message), Toast.LENGTH_LONG).show()
+        8 -> Toast.makeText(localContext,stringResource(R.string.error_code8_message), Toast.LENGTH_LONG).show()
+        9 -> Toast.makeText(localContext,stringResource(R.string.error_code9_message), Toast.LENGTH_LONG).show()
     }
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -128,21 +142,91 @@ fun SignUpScreen(modifier: Modifier = Modifier,
                             leadingicon = R.drawable.favicon_user
                         )
 
-                        EditTextField(
-                            label = R.string.phone,
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Phone,
-                                imeAction = ImeAction.Next
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                            ),
-                            value = phone,
-                            onValueChange = onPhoneChanged,
-                            textStyle = MaterialTheme.typography.headlineMedium,
-                            modifier = modifier.padding(8.dp),
-                            leadingicon = R.drawable.favicon_phone
-                        )
+                        Row(modifier = modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically)
+                        {
+
+
+                                Row(modifier = Modifier.fillMaxWidth()
+                                    .weight(1f)
+                                    .padding(end = 8.dp, top = 4.dp)
+                                    .border(1.dp,Color.Gray, MaterialTheme.shapes.medium),
+                                    horizontalArrangement = Arrangement.Start,
+                                    verticalAlignment = Alignment.CenterVertically){
+
+                                    Image(
+                                        painter = painterResource(flag),
+                                        contentDescription = null,
+                                        modifier = Modifier.padding(4.dp)
+                                    )
+
+                                    Text(
+                                        stringResource(cod),
+                                        style = MaterialTheme.typography.headlineMedium
+                                    )
+
+                                    IconButton(onClick = { expanded = true }) {
+                                        Icon(
+                                            imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                                            tint = MaterialTheme.colorScheme.secondary,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
+
+
+
+                                DropdownMenu(
+                                    expanded = expanded,
+                                    onDismissRequest = { expanded = false },
+                                    modifier = Modifier.border(2.dp, Color.Black,MaterialTheme.shapes.medium)
+                                )
+                                {
+
+                                    codes_list.forEach{
+
+                                        DropdownMenuItem(
+                                            text = { Text(
+                                                stringResource(it.code),
+                                                style = MaterialTheme.typography.headlineMedium
+                                            ) },
+                                            onClick = { expanded= false
+                                                cod = it.code
+                                                flag = it.flag},
+                                            leadingIcon = {
+                                                Image(
+                                                    painter = painterResource(it.flag),
+                                                    contentDescription = null
+                                                )
+                                            })
+                                        Divider()
+                                    }
+
+
+                                }
+
+
+                            EditTextField(
+                                label = R.string.phone,
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    keyboardType = KeyboardType.Phone,
+                                    imeAction = ImeAction.Next
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                                ),
+                                value = phone,
+                                onValueChange = onPhoneChanged,
+                                textStyle = MaterialTheme.typography.headlineMedium,
+                                modifier = modifier.weight(2f),
+                                leadingicon = R.drawable.favicon_phone,
+
+                            )
+                        }
+
 
                         EditTextField(
                             label = R.string.user_label,
