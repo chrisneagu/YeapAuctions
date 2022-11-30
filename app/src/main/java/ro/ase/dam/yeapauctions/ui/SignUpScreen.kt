@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,9 +45,11 @@ fun SignUpScreen(modifier: Modifier = Modifier,
                  password: String,
                  confirmed_password: String,
                  name: String,
+                 last_name: String,
                  onEmailChanged: (String) -> Unit,
                  onPasswordChanged: (String) -> Unit,
                  onNameChanged: (String) -> Unit,
+                 onLastNameChanged : (String) -> Unit,
                  onPhoneChanged: (String) -> Unit,
                  onConfirmedPasswordChanged: (String) -> Unit,
                  onBackClicked: () -> Unit
@@ -64,13 +68,15 @@ fun SignUpScreen(modifier: Modifier = Modifier,
     when(errorCode) {
         1 -> Toast.makeText(localContext,stringResource(R.string.error_code1_message), Toast.LENGTH_LONG).show()
         2 -> Toast.makeText(localContext,stringResource(R.string.error_code2_message), Toast.LENGTH_LONG).show()
-        3 -> Toast.makeText(localContext,stringResource(R.string.error_code3_message), Toast.LENGTH_LONG).show()
-        4 -> Toast.makeText(localContext,stringResource(R.string.error_code4_message), Toast.LENGTH_LONG).show()
-        5 -> Toast.makeText(localContext,stringResource(R.string.error_code5_message), Toast.LENGTH_LONG).show()
-        6 -> Toast.makeText(localContext,stringResource(R.string.error_code6_message), Toast.LENGTH_LONG).show()
-        7 -> Toast.makeText(localContext,stringResource(R.string.error_code7_message), Toast.LENGTH_LONG).show()
-        8 -> Toast.makeText(localContext,stringResource(R.string.error_code8_message), Toast.LENGTH_LONG).show()
-        9 -> Toast.makeText(localContext,stringResource(R.string.error_code9_message), Toast.LENGTH_LONG).show()
+        3 -> Toast.makeText(localContext,stringResource(R.string.error_code10_message), Toast.LENGTH_LONG).show()
+        4 -> Toast.makeText(localContext,stringResource(R.string.error_code11_message), Toast.LENGTH_LONG).show()
+        5 -> Toast.makeText(localContext,stringResource(R.string.error_code3_message), Toast.LENGTH_LONG).show()
+        6 -> Toast.makeText(localContext,stringResource(R.string.error_code4_message), Toast.LENGTH_LONG).show()
+        7 -> Toast.makeText(localContext,stringResource(R.string.error_code5_message), Toast.LENGTH_LONG).show()
+        8 -> Toast.makeText(localContext,stringResource(R.string.error_code6_message), Toast.LENGTH_LONG).show()
+        9 -> Toast.makeText(localContext,stringResource(R.string.error_code7_message), Toast.LENGTH_LONG).show()
+        10 -> Toast.makeText(localContext,stringResource(R.string.error_code8_message), Toast.LENGTH_LONG).show()
+        11 -> Toast.makeText(localContext,stringResource(R.string.error_code9_message), Toast.LENGTH_LONG).show()
     }
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -126,22 +132,46 @@ fun SignUpScreen(modifier: Modifier = Modifier,
 
                     Column(verticalArrangement = Arrangement.SpaceAround,
                         horizontalAlignment = Alignment.Start){
-                        EditTextField(
-                            label = R.string.person_name,
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Next
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                            ),
-                            value = name,
-                            onValueChange = onNameChanged,
-                            textStyle = MaterialTheme.typography.headlineMedium,
-                            modifier = modifier.padding(8.dp),
-                            leadingicon = R.drawable.favicon_user
-                        )
+                        Row(modifier = modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically)
+                        {
+                            EditTextField(
+                                label = R.string.person_name,
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    keyboardType = KeyboardType.Text,
+                                    imeAction = ImeAction.Next
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                                ),
+                                value = name,
+                                onValueChange = onNameChanged,
+                                textStyle = MaterialTheme.typography.headlineMedium,
+                                leadingicon = Icons.Outlined.Edit,
+                                modifier = Modifier.weight(1f)
+                                    .padding(end = 8.dp)
+                            )
 
+                            EditTextField(
+                                label = R.string.person_last_name,
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    keyboardType = KeyboardType.Text,
+                                    imeAction = ImeAction.Next
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                                ),
+                                value = last_name,
+                                onValueChange = onLastNameChanged,
+                                textStyle = MaterialTheme.typography.headlineMedium,
+                                leadingicon = Icons.Outlined.Edit,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        /*
                         Row(modifier = modifier
                             .fillMaxWidth()
                             .padding(8.dp),
@@ -154,59 +184,72 @@ fun SignUpScreen(modifier: Modifier = Modifier,
                                     .weight(1f)
                                     .padding(end = 8.dp, top = 4.dp)
                                     .border(1.dp,Color.Gray, MaterialTheme.shapes.medium),
-                                    horizontalArrangement = Arrangement.Start,
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
                                     verticalAlignment = Alignment.CenterVertically){
 
                                     Image(
                                         painter = painterResource(flag),
                                         contentDescription = null,
-                                        modifier = Modifier.padding(4.dp)
+                                        modifier = Modifier.fillMaxWidth()
+                                            .weight(1f)
+                                            .padding(8.dp)
                                     )
 
                                     Text(
                                         stringResource(cod),
-                                        style = MaterialTheme.typography.headlineMedium
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        modifier = Modifier.fillMaxWidth()
+                                            .weight(1f)
                                     )
 
-                                    IconButton(onClick = { expanded = true }) {
-                                        Icon(
-                                            imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                                            tint = MaterialTheme.colorScheme.secondary,
-                                            contentDescription = null
-                                        )
-                                    }
-                                }
-
-
-
-                                DropdownMenu(
-                                    expanded = expanded,
-                                    onDismissRequest = { expanded = false },
-                                    modifier = Modifier.border(2.dp, Color.Black,MaterialTheme.shapes.medium)
-                                )
-                                {
-
-                                    codes_list.forEach{
-
-                                        DropdownMenuItem(
-                                            text = { Text(
-                                                stringResource(it.code),
-                                                style = MaterialTheme.typography.headlineMedium
-                                            ) },
-                                            onClick = { expanded= false
-                                                cod = it.code
-                                                flag = it.flag},
-                                            leadingIcon = {
-                                                Image(
-                                                    painter = painterResource(it.flag),
-                                                    contentDescription = null
+                                    Box(contentAlignment = Alignment.CenterEnd,
+                                            modifier = Modifier.fillMaxWidth()
+                                                .weight(1f))
+                                        {
+                                            IconButton(onClick = { expanded = true }) {
+                                                Icon(
+                                                imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                                                tint = MaterialTheme.colorScheme.secondary,
+                                                contentDescription = null
                                                 )
-                                            })
-                                        Divider()
-                                    }
+                                            }
+
+                                            DropdownMenu(
+                                                expanded = expanded,
+                                                onDismissRequest = { expanded = false },
+                                                modifier = Modifier.border(2.dp, Color.Black,MaterialTheme.shapes.medium)
+                                            )
+                                            {
+
+                                                codes_list.forEach{
+
+                                                    DropdownMenuItem(
+                                                        text = { Text(
+                                                            stringResource(it.code),
+                                                            style = MaterialTheme.typography.headlineMedium
+                                                        ) },
+                                                        onClick = { expanded= false
+                                                            cod = it.code
+                                                            flag = it.flag},
+                                                        leadingIcon = {
+                                                            Image(
+                                                                painter = painterResource(it.flag),
+                                                                contentDescription = null
+                                                            )
+                                                        })
+                                                    Divider()
+                                                }
 
 
+                                            }
+
+
+                                        }
                                 }
+
+
+
+
 
 
                             EditTextField(
@@ -222,12 +265,12 @@ fun SignUpScreen(modifier: Modifier = Modifier,
                                 onValueChange = onPhoneChanged,
                                 textStyle = MaterialTheme.typography.headlineMedium,
                                 modifier = modifier.weight(2f),
-                                leadingicon = R.drawable.favicon_phone,
+                                leadingicon = Icons.Outlined.Phone,
 
                             )
                         }
 
-
+                        */
                         EditTextField(
                             label = R.string.user_label,
                             keyboardOptions = KeyboardOptions.Default.copy(
@@ -241,7 +284,7 @@ fun SignUpScreen(modifier: Modifier = Modifier,
                             onValueChange = onEmailChanged,
                             textStyle = MaterialTheme.typography.headlineMedium,
                             modifier = modifier.padding(8.dp),
-                            leadingicon = R.drawable.favicon_user
+                            leadingicon = Icons.Outlined.Email
                         )
 
                         EditTextFieldPassword(
@@ -277,8 +320,8 @@ fun SignUpScreen(modifier: Modifier = Modifier,
 
             }
 
-            Button( //todo validation on all text fields + push in data base 
-                onClick = { errorCode = ValidSignUp(email,phone,password,confirmed_password,name)}, //TODO ON CLICK PENTRU LOGIN
+            OutlinedButton( //todo validation on all text fields + push in data base
+                onClick = { errorCode = ValidSignUp(email,phone,password,confirmed_password,name, last_name)}, //TODO ON CLICK PENTRU LOGIN
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -313,28 +356,35 @@ fun ValidSignUp( email: String,
                  phone: String,
                  password: String,
                  confirmed_password: String,
-                 name: String) : Int{
+                 name: String,
+                 last_name:String) : Int{
     if(name.isEmpty())
         return 1
-    if (!Regex("\\w\\s\\w").containsMatchIn(name)) {
-        return 2 //Invalid name format
+    if (!Regex("\\w").containsMatchIn(name)) {
+        return 2 //First name should contain only letters
+    }
+
+    if(last_name.isEmpty())
+        return 3
+    if (!Regex("\\w").containsMatchIn(last_name)) {
+        return 4 //Last name should contain only letters
     }
     if(phone.isEmpty())
-        return 3
+        return 5
     if (!Regex("""\d{9}""").containsMatchIn(phone)) {
-        return 4 //Invalid phone format, should be 9 digits
+        return 6 //Invalid phone format, should be 9 digits
     }
 
     if(email.isEmpty())
-        return 5
+        return 7
     if (!Regex("""[A-Za-z]{1,}[a-zA-Z0-9_.-]+@[a-zA-Z]+\.[a-zA-Z]{1,}""").containsMatchIn(email)) {
-        return 6 //Invalid email format
+        return 8 //Invalid email format
     }
 
     if(password.isEmpty())
-        return 7
+        return 9
     if (!Regex( """(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@${'$'}!%*?&])[A-Za-z\d@${'$'}!%*?&]{8,}""").containsMatchIn(password)) {
-        return 8 //Password must be minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
+        return 10 //Password must be minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
     }
 
     if(!password.equals(confirmed_password))

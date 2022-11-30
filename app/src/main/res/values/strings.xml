@@ -10,12 +10,12 @@
     <string name="message_sign_up">Sign up</string>
     <string name="message_forgot_password">Forgot password</string>
     <string name="submit_message">Submit</string>
-    <string name="person_name">Name Surname</string>
+    <string name="person_name">First name</string>
     <string name="password_label_confirm">Confirm password</string>
     <string name="btn_back">back</string>
     <string name="phone">Contact Phone</string>
-    <string name="error_code1_message">Name is empty</string>
-    <string name="error_code2_message">Invalid format for name</string>
+    <string name="error_code1_message">First name is empty</string>
+    <string name="error_code2_message">First name should contain only letters</string>
     <string name="error_code3_message">Phone is empty</string>
     <string name="error_code4_message">Invalid phone format, should be 9 digits</string>
     <string name="error_code5_message">Email is empty</string>
@@ -27,4 +27,7 @@
     <string name="UnitedKingdom">+44</string>
     <string name="France">+33</string>
     <string name="Spain">+34</string>
+    <string name="person_last_name">Last name</string>
+    <string name="error_code11_message">Last name should contain only letters</string>
+    <string name="error_code10_message">Last name is empty</string>
 </resources>

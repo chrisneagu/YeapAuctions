@@ -1,27 +1,48 @@
 package ro.ase.dam.yeapauctions.ui
 
 
+import android.os.Bundle
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.*
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import ro.ase.dam.yeapauctions.data.LoginUiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import java.text.NumberFormat
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import kotlin.math.sign
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.createSavedStateHandle
+import kotlinx.coroutines.flow.*
 
 
-class LoginViewModel : ViewModel() {
+data class LoginUiState(
+    val name: String = "",
+    val last_name: String = "",
+    val loginEmail: String = "",
+    val forgotpasswordEmail: String = "",
+    val signupEmail: String = "",
+    val loginPassword: String = "",
+    val signupPassword: String = "",
+    val confirmed_password: String = "",
+    val phone: String = ""
 
-    private val _uiState = MutableStateFlow(LoginUiState())
+)
+
+class LoginViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() { //primim Saved State Handle ca sa pastram ViewModelul si dupa distrugerea aplicatiei
+    private var _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
 
 
+    fun setLastName(lastName: String){
+        _uiState.update { currentState ->
+            currentState.copy(
+                last_name = lastName
+            )
+        }
 
+    }
 
     fun setName(name: String){
         _uiState.update { currentState ->
@@ -53,7 +74,11 @@ class LoginViewModel : ViewModel() {
                 loginEmail = email
             )
         }
+        savedStateHandle["userEmail"] =  email
     }
+
+
+
 
   fun setForgotpasswordEmail(email: String){
       _uiState.update { currentState ->

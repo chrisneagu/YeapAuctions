@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -98,17 +99,18 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier,
                         onValueChange = onEmailChanged,
                         textStyle = MaterialTheme.typography.headlineMedium,
                         modifier = modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp, bottom = 8.dp),
-                        leadingicon = R.drawable.favicon_user
+                        leadingicon = Icons.Outlined.Email
                     )
 
                 }
 
             }
 
-            Button(
+            OutlinedButton(
                 onClick = {  }, //TODO ON CLICK PENTRU LOGIN
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(8.dp)
             ) {
                 Box(
@@ -122,6 +124,8 @@ fun ForgotPasswordScreen(modifier: Modifier = Modifier,
                 }
             }
         }
+
+
     }
 }
 

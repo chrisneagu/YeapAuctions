@@ -9,6 +9,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Password
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -44,7 +47,7 @@ fun EditTextFieldPassword(
 
             Text(
                 stringResource(id = label),
-                style = MaterialTheme.typography.labelMedium)
+                style = MaterialTheme.typography.labelSmall)
 
         },
         modifier = modifier.fillMaxWidth(),
@@ -63,7 +66,8 @@ fun EditTextFieldPassword(
                 Icon(imageVector  = image, description)
             }
         },
-        leadingIcon = { Icon(painter = painterResource(id = R.drawable.favicon_password), contentDescription = "leadingIcon",  modifier= Modifier.size(32.dp)) }
+
+        leadingIcon = { Icon(imageVector = Icons.Outlined.Lock, contentDescription = "leadingIcon",  modifier= Modifier.size(32.dp)) }
     )
 }
 
@@ -72,7 +76,7 @@ fun EditTextFieldPassword(
 @Composable
 fun EditTextField(
     @StringRes label: Int,
-    @DrawableRes leadingicon: Int,
+    leadingicon: ImageVector,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions, //optiuni tastatura ca sa se inchida cand apesi pe done
     value: String,
@@ -87,13 +91,13 @@ fun EditTextField(
         label = {
             Text(
                 stringResource(id = label),
-                style = MaterialTheme.typography.labelMedium)
+                style = MaterialTheme.typography.labelSmall)
         },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         textStyle = textStyle,
-        leadingIcon = { Icon(painter = painterResource(id = leadingicon), contentDescription = "leadingIcon", modifier= Modifier.size(32.dp)) }
+        leadingIcon = { Icon(imageVector= leadingicon, contentDescription= "leadingIcon", modifier= Modifier.size(32.dp)) }
     )
 }
