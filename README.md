@@ -65,3 +65,15 @@ The application allows creating an account through which the user can find lots 
 
 ![image](https://github.com/chrisneagu/YeapAuctions/assets/57600322/1f2e85e5-1c33-47f7-93e1-62e893666e0f)
 
+# Placing a bid
+
+- Users can press on lot card to get more information about a lot like condition and also a horizontal gallery that can zoom and open a dialog with another horizontal gallery if clicked
+- Placing a bid launches a dialog that offers more information about the total costs like amount of the bid, auctioning costs that is a fixed 18% treshold, VAT based on lot VAT field and the VAT on acutioning costs
+- By placing a bid the user has no right of withdrawal
+
+![image](https://github.com/chrisneagu/YeapAuctions/assets/57600322/94cff970-e471-4eef-8344-e2892ca10a2c)
+
+# An invoice.pdf generated in the phone's internal memory
+
+![image](https://github.com/chrisneagu/YeapAuctions/assets/57600322/6d176b29-c68e-4832-ba8c-188f40dc7f99)
+
