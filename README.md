@@ -8,7 +8,7 @@ People over 18 years can register into the app with otp sms verification and can
 
 # Description
 
-The application allows creating an account through which the user can find lots of products tht satisfy theyr requirements, placing bids and winning like the fictive company name shows.
+The application allows creating an account through which the user can find lots of products that satisfy their requirements, placing bids and winning like the fictive company name shows.
 
 # Technologies
 
