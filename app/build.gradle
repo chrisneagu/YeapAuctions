@@ -1,6 +1,16 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
+    //serializare json etc
+    id 'org.jetbrains.kotlin.plugin.serialization'
+
+    //for parcelable boilerplate code only adnotate Parcelize
+    id("kotlin-parcelize")
+
+    //Hilt is a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project.
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -9,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "ro.ase.dam.yeapauctions"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -37,35 +47,122 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerExtensionVersion '1.4.1'
     }
     packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        resources.excludes.add("META-INF/*")
+    }
+    configurations {
+        all{
+            resolutionStrategy {
+                force 'org.bouncycastle:bcprov-jdk15on:1.68'
+                force 'org.bouncycastle:bcprov-jdk15to18:1.69'
+            }
         }
     }
 }
 
 dependencies {
 
+    //iTEXT Android pdf
+    implementation('com.itextpdf:itext7-core:7.1.16') {
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15to18'
+    }
+    implementation('com.itextpdf:layout:7.1.16') {
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+        exclude group: 'org.bouncycastle', module: 'bcprov-jdk15to18'
+    }
 
-    implementation "androidx.navigation:navigation-compose:2.5.0"
+    //Apache Poi
+    implementation 'org.apache.poi:poi:5.1.0'
+    implementation 'org.apache.poi:poi-ooxml:5.1.0'
+
+    //Stripe
+    implementation 'com.stripe:stripe-android:20.25.4'
+
+    //socket.io
+    implementation ('io.socket:socket.io-client:2.1.0') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
+
+    //Match flags with country codes using emoji
+    implementation 'com.vdurmont:emoji-java:5.1.1'
+
+    //Async Image coil
+    implementation("io.coil-kt:coil-compose:2.3.0")
+
+    //mongoDB
+    implementation 'org.mongodb:bson:4.2.3'
+
+    // coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
+    //Twilio
+    implementation "com.twilio.sdk:twilio:9.2.4"
+    implementation 'androidx.paging:paging-common-ktx:3.1.1'
+    implementation 'androidx.compose.material:material:1.4.2'
+
+    def ktor_version = "2.2.3"
+    // Ktor client
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    // Ktor engine
+    implementation "io.ktor:ktor-client-cio:$ktor_version"
+    // Ktor Content Negotiation plugin
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
+    // Ktor serde Json plugin
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+    // Ktor logging
+    implementation "io.ktor:ktor-client-logging:$ktor_version"
+    //Json Serialize
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    // Ktor Version
+    implementation("io.ktor:ktor-client-websockets:$ktor_version")
+
+    def lifecycle_version = "2.5.1"
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+
+    //Preferences DataStore
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+
+    //hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+
+    //navigation
+    implementation "androidx.navigation:navigation-compose:2.5.3"
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.5.3'
+    //Ui Material
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.material3:material3:1.1.0-alpha01"
-    implementation 'androidx.activity:activity-compose:1.5.1'
+    implementation "androidx.compose.material3:material3:1.1.0-beta02"
+    implementation "androidx.compose.material3:material3-window-size-class:1.1.0-beta02"
+
+    //ui compose
+    implementation 'androidx.activity:activity-compose:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
-    implementation 'androidx.test.ext:junit-ktx:1.1.3'
-    implementation 'androidx.navigation:navigation-runtime-ktx:2.5.3'
-    implementation "androidx.compose.material3:material3-window-size-class:1.1.0-alpha01"
+    implementation 'androidx.core:core-ktx:1.10.0'
+
+    //unit test
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+
+
+
     //saved state
-    implementation("androidx.savedstate:savedstate-ktx:1.2.0")
+    implementation("androidx.savedstate:savedstate-ktx:1.2.1")
 
     androidTestImplementation 'junit:junit:4.12'
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+}
 
-
-
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

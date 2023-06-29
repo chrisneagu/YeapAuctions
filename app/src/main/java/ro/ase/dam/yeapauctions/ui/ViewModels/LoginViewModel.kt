@@ -1,21 +1,12 @@
 package ro.ase.dam.yeapauctions.ui
 
-
-import android.os.Bundle
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import android.os.Parcelable
 import androidx.lifecycle.*
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.savedstate.SavedStateRegistryOwner
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.createSavedStateHandle
 import kotlinx.coroutines.flow.*
+import kotlinx.parcelize.Parcelize
 
 
+@Parcelize
 data class LoginUiState(
     val name: String = "",
     val last_name: String = "",
@@ -25,14 +16,21 @@ data class LoginUiState(
     val loginPassword: String = "",
     val signupPassword: String = "",
     val confirmed_password: String = "",
-    val phone: String = ""
+    val phone: String = "",
+    val isCompany: Boolean = true,
+    val companyName: String = "",
+    val vatCode: String = "",
+    val industry: String = "",
+    val gender: Boolean = false,
+): Parcelable
 
-)
-
-class LoginViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() { //primim Saved State Handle ca sa pastram ViewModelul si dupa distrugerea aplicatiei
-    private var _uiState = MutableStateFlow(LoginUiState())
+class LoginViewModel( private val savedStateHandle: SavedStateHandle) : ViewModel() { //primim Saved State Handle ca sa pastram ViewModelul si dupa distrugerea aplicatiei
+    private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
+    init {
+
+    }
 
 
     fun setLastName(lastName: String){
@@ -112,8 +110,43 @@ class LoginViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel
         }
     }
 
-    fun resetLogin() {
-        _uiState.value = LoginUiState()
+    fun setIsCompany(isCompany: Boolean){
+        _uiState.update { currentState ->
+            currentState.copy(
+                isCompany = isCompany
+            )
+        }
     }
 
+    fun setGender(gender: Boolean){
+        _uiState.update { currentState ->
+            currentState.copy(
+                gender = gender
+            )
+        }
+    }
+
+    fun setCompanyName(companyName: String){
+        _uiState.update { currentState ->
+            currentState.copy(
+                companyName = companyName
+            )
+        }
+    }
+
+    fun setVatCode(vatCode: String){
+        _uiState.update { currentState ->
+            currentState.copy(
+                vatCode = vatCode
+            )
+        }
+    }
+
+    fun setIndustry(industry: String){
+        _uiState.update { currentState ->
+            currentState.copy(
+                industry = industry
+            )
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package ro.ase.dam.yeapauctions
 
 
+import KtorHttpClient
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -23,9 +26,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import org.bson.types.ObjectId
+import ro.ase.dam.yeapauctions.classes.User
+import ro.ase.dam.yeapauctions.classes.UserResponse
 import ro.ase.dam.yeapauctions.ui.components.EditTextField
 import ro.ase.dam.yeapauctions.ui.components.EditTextFieldPassword
 import ro.ase.dam.yeapauctions.ui.theme.YeapAuctionsTheme
+import kotlin.math.log
 
 @Composable
 fun LoginScreen(
@@ -36,10 +50,11 @@ fun LoginScreen(
     onEmailChanged: (String) -> Unit,
     password: String,
     onPasswordChanged: (String) -> Unit,
+    onSuccesLoggedIn: (ObjectId?) -> Unit
 ){
 
     val focusManager = LocalFocusManager.current
-
+    val coroutineScope = rememberCoroutineScope()
     Column() {
 
         Row(
@@ -100,7 +115,7 @@ fun LoginScreen(
                     value = email,
                     onValueChange = onEmailChanged,
                     textStyle = MaterialTheme.typography.headlineMedium,
-                    modifier = modifier.padding(16.dp),
+                    modifier = modifier.padding(8.dp),
                     leadingicon = Icons.Outlined.Email
                 )
 
@@ -116,7 +131,7 @@ fun LoginScreen(
                     value = password,
                     onValueChange = onPasswordChanged,
                     textStyle = MaterialTheme.typography.headlineMedium,
-                    modifier = modifier.padding(16.dp)
+                    modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
                 )
             }
 
@@ -130,13 +145,15 @@ fun LoginScreen(
                     )
             }
 
-
-
                 OutlinedButton(
-                    onClick = { }, //TODO ON CLICK PENTRU LOGIN
+                    onClick = {
+                        coroutineScope.launch {
+                            val id: ObjectId? = logIn(email, password)
+                            Log.d("Loggining", id.toString())
+                            onSuccesLoggedIn(id)
+                        } },
                     shape = MaterialTheme.shapes.medium,
                     modifier = Modifier.fillMaxWidth()
-                        .padding(16.dp)
                 ) {
                     Box(
                         contentAlignment = Alignment.CenterStart
@@ -175,15 +192,25 @@ fun LoginScreen(
     }
 }
 
-
-
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    YeapAuctionsTheme {
-
+suspend fun logIn(
+    email: String,
+    password: String
+) : ObjectId? {
+    try{
+        val user: User = KtorHttpClient.post("/api/auth"){
+            contentType(ContentType.Application.Json)
+            setBody("{\n" +
+                    "    \"email\": \"$email\",\n" +
+                    "    \"password\": \"$password\"\n" +
+                    "}")
+        }.body()
+        return user.id
+    }catch (e: Exception) {
+        Log.e("logInUser", "Failed to log in user in DataBase: ${e.message}", e)
+        Log.e("body", "{\n" +
+                "    \"email\": \"$email\",\n" +
+                "    \"password\": \"$password\"\n" +
+                "}")
     }
+    return null
 }

@@ -77,14 +77,9 @@ fun YeapAuctionsTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val colors = if (!useDarkTheme) {
-        LightColors
-    } else {
-        DarkColors
-    }
 
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme = if (!useDarkTheme) LightColors else DarkColors,
         content = content,
         shapes = replyShapes,
         typography = Typography
